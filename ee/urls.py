@@ -62,11 +62,11 @@ def extend_api_router(
         "organization_resource_access",
         ["organization_id"],
     )
-    projects_router.register(r"hooks", hooks.HookViewSet, "project_hooks", ["team_id"])
+    projects_router.register(r"hooks", hooks.HookViewSet, "environment_hooks", ["team_id"])
     projects_router.register(
         r"explicit_members",
         explicit_team_member.ExplicitTeamMemberViewSet,
-        "project_explicit_members",
+        "environment_explicit_members",
         ["team_id"],
     )
     project_dashboards_router.register(
@@ -76,7 +76,9 @@ def extend_api_router(
         ["team_id", "dashboard_id"],
     )
 
-    projects_router.register(r"subscriptions", subscription.SubscriptionViewSet, "subscriptions", ["team_id"])
+    projects_router.register(
+        r"subscriptions", subscription.SubscriptionViewSet, "environment_subscriptions", ["team_id"]
+    )
     projects_router.register(
         r"session_recording_playlists",
         session_recording_playlist.SessionRecordingPlaylistViewSet,
