@@ -41,7 +41,9 @@ def peek_first_and_rewind(
 
 
 @contextlib.asynccontextmanager
-async def set_status_to_running_task(run_id: str | None, logger, timeout: float = 10.0) -> None:
+async def set_status_to_running_task(
+    run_id: str | None, logger, timeout: float = 10.0
+) -> typing.AsyncIterator[asyncio.Task]:
     """Manage a background task to set a batch export run to 'RUNNING' status.
 
     This is intended to be used within a batch export's 'insert_*' activity. These activities cannot afford
@@ -53,6 +55,8 @@ async def set_status_to_running_task(run_id: str | None, logger, timeout: float 
     the status. This means that, worse case, the batch export status won't be displayed as 'RUNNING' while running.
     """
     if run_id is None:
+        # Should never land here except in tests of individual activities
+        yield
         return
 
     background_task = asyncio.create_task(
